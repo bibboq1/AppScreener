@@ -8,7 +8,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Badge } from '@/components/ui/badge'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
-import { Plus, Edit, Trash2, Briefcase } from 'lucide-react'
+import { Plus, CreditCard as Edit, Trash2, Briefcase } from 'lucide-react'
 
 export function JobLibrary() {
   const [jobs, setJobs] = useState<JobDescription[]>([])
