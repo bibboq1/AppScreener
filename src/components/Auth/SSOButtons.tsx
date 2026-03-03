@@ -12,10 +12,23 @@ export function SSOButtons() {
     setLoading(provider)
     setError(null)
 
-    const { error } = await signInWithOAuth(provider)
+    try {
+      const { error } = await signInWithOAuth(provider)
 
-    if (error) {
-      setError(error.message)
+      if (error) {
+        if (error.message.includes('not enabled')) {
+          setError(
+            `${provider === 'google' ? 'Google' : 'BambooHR'} sign-in is not configured yet. Please configure it in the Supabase Dashboard or use email/password to sign in.`
+          )
+        } else {
+          setError(error.message)
+        }
+        setLoading(null)
+      }
+    } catch (err) {
+      setError(
+        `${provider === 'google' ? 'Google' : 'BambooHR'} sign-in is not configured. Please use email/password to sign in.`
+      )
       setLoading(null)
     }
   }
