@@ -4,10 +4,11 @@ import { CandidateInbox } from '@/components/CandidateInbox'
 import { MatchMatrix } from '@/components/MatchMatrix'
 import { CandidateDetail } from '@/components/CandidateDetail'
 import { SimulateWebhook } from '@/components/SimulateWebhook'
+import { Connections } from '@/components/Connections'
 import { type CandidateWithScores } from '@/lib/supabase'
-import { Briefcase, Users, Grid3x3, Zap } from 'lucide-react'
+import { Briefcase, Users, Grid3x3, Zap, Settings } from 'lucide-react'
 
-type View = 'jobs' | 'inbox' | 'matrix' | 'simulate'
+type View = 'jobs' | 'inbox' | 'matrix' | 'simulate' | 'connections'
 
 function App() {
   const [currentView, setCurrentView] = useState<View>('jobs')
@@ -18,6 +19,7 @@ function App() {
     { id: 'inbox' as View, name: 'Candidate Inbox', icon: Users },
     { id: 'matrix' as View, name: 'Match Matrix', icon: Grid3x3 },
     { id: 'simulate' as View, name: 'Simulate Webhook', icon: Zap },
+    { id: 'connections' as View, name: 'Connections', icon: Settings },
   ]
 
   return (
@@ -26,7 +28,7 @@ function App() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
             <div>
-              <h1 className="text-2xl font-bold text-slate-900">Smart Talent Matcher</h1>
+              <h1 className="text-2xl font-bold text-slate-900">Smart Talent Matcher Dashboard</h1>
               <p className="text-sm text-slate-500">Intelligent candidate matching for BambooHR</p>
             </div>
           </div>
@@ -60,6 +62,7 @@ function App() {
         )}
         {currentView === 'matrix' && <MatchMatrix />}
         {currentView === 'simulate' && <SimulateWebhook />}
+        {currentView === 'connections' && <Connections />}
       </main>
 
       {selectedCandidate && (
