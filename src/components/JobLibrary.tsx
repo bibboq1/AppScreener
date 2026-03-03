@@ -32,7 +32,9 @@ export function JobLibrary() {
       .select('*')
       .order('created_at', { ascending: false })
 
-    if (!error && data) {
+    if (error) {
+      console.error('Error loading jobs:', error)
+    } else if (data) {
       setJobs(data)
     }
   }
@@ -42,19 +44,25 @@ export function JobLibrary() {
     setLoading(true)
 
     try {
+      let result
       if (editingJob) {
-        await supabase
+        result = await supabase
           .from('job_descriptions')
           .update(formData)
           .eq('id', editingJob.id)
       } else {
-        await supabase
+        result = await supabase
           .from('job_descriptions')
           .insert([formData])
       }
 
-      await loadJobs()
-      resetForm()
+      if (result.error) {
+        console.error('Error saving job:', result.error)
+        alert('Failed to save job description. Please try again.')
+      } else {
+        await loadJobs()
+        resetForm()
+      }
     } finally {
       setLoading(false)
     }
