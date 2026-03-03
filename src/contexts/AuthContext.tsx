@@ -8,7 +8,11 @@ interface UserProfile {
   full_name: string
   role: 'admin' | 'recruiter' | 'hiring_manager'
   is_active: boolean
+  avatar_url?: string | null
+  auth_provider?: string
 }
+
+type OAuthProvider = 'google' | 'azure'
 
 interface AuthContextType {
   user: User | null
@@ -17,6 +21,7 @@ interface AuthContextType {
   loading: boolean
   signIn: (email: string, password: string) => Promise<{ error: Error | null }>
   signUp: (email: string, password: string, fullName: string) => Promise<{ error: Error | null }>
+  signInWithOAuth: (provider: OAuthProvider) => Promise<{ error: Error | null }>
   signOut: () => Promise<void>
   refreshProfile: () => Promise<void>
 }
@@ -94,6 +99,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return { error }
   }
 
+  const signInWithOAuth = async (provider: OAuthProvider) => {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider,
+      options: {
+        redirectTo: `${window.location.origin}/auth/callback`,
+        scopes: provider === 'google' ? 'openid email profile' : undefined,
+      },
+    })
+    return { error }
+  }
+
   const signOut = async () => {
     await supabase.auth.signOut()
     setProfile(null)
@@ -106,6 +122,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     loading,
     signIn,
     signUp,
+    signInWithOAuth,
     signOut,
     refreshProfile,
   }

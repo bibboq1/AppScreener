@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '@/contexts/AuthContext'
 import { supabase } from '@/lib/supabase'
+import { SSOButtons } from './SSOButtons'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -83,9 +84,23 @@ export function Login({ onToggleMode }: LoginProps) {
           </div>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-5">
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+          <div className="space-y-6">
+            <SSOButtons />
+
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t border-[var(--border-subtle)]" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-[var(--surface-2)] px-2 text-[var(--text-muted)]">
+                  Or continue with email
+                </span>
+              </div>
+            </div>
+
+            <form onSubmit={handleSubmit} className="space-y-5">
+              <div className="space-y-2">
+                <Label htmlFor="email">Email</Label>
               <Input
                 id="email"
                 type="email"
@@ -109,28 +124,29 @@ export function Login({ onToggleMode }: LoginProps) {
               />
             </div>
 
-            {error && (
-              <div className="rounded-[var(--radius-md)] p-3 bg-[var(--error)] bg-opacity-10 border border-[var(--error)] border-opacity-30 flex items-start gap-2">
-                <AlertCircle className="h-4 w-4 text-[var(--error)] flex-shrink-0 mt-0.5" />
-                <p className="text-sm text-[var(--error)]">{error}</p>
+              {error && (
+                <div className="rounded-[var(--radius-md)] p-3 bg-[var(--error)] bg-opacity-10 border border-[var(--error)] border-opacity-30 flex items-start gap-2">
+                  <AlertCircle className="h-4 w-4 text-[var(--error)] flex-shrink-0 mt-0.5" />
+                  <p className="text-sm text-[var(--error)]">{error}</p>
+                </div>
+              )}
+
+              <Button type="submit" className="w-full" disabled={loading} size="lg">
+                {loading ? 'Signing in...' : 'Sign In'}
+              </Button>
+
+              <div className="text-center text-sm">
+                <span className="text-[var(--text-secondary)]">Don't have an account? </span>
+                <button
+                  type="button"
+                  onClick={onToggleMode}
+                  className="text-[var(--accent-violet)] font-medium hover:text-[var(--accent-magenta)] transition-micro hover:underline"
+                >
+                  Sign up
+                </button>
               </div>
-            )}
-
-            <Button type="submit" className="w-full" disabled={loading} size="lg">
-              {loading ? 'Signing in...' : 'Sign In'}
-            </Button>
-
-            <div className="text-center text-sm">
-              <span className="text-[var(--text-secondary)]">Don't have an account? </span>
-              <button
-                type="button"
-                onClick={onToggleMode}
-                className="text-[var(--accent-violet)] font-medium hover:text-[var(--accent-magenta)] transition-micro hover:underline"
-              >
-                Sign up
-              </button>
-            </div>
-          </form>
+            </form>
+          </div>
         </CardContent>
       </Card>
     </div>

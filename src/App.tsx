@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { AuthProvider, useAuth } from '@/contexts/AuthContext'
 import { Login } from '@/components/Auth/Login'
 import { Register } from '@/components/Auth/Register'
+import { AuthCallback } from '@/components/Auth/AuthCallback'
 import { JobLibrary } from '@/components/JobLibrary'
 import { CandidateInbox } from '@/components/CandidateInbox'
 import { MatchMatrix } from '@/components/MatchMatrix'
@@ -159,6 +160,13 @@ function Dashboard() {
 function AuthFlow() {
   const { user, loading } = useAuth()
   const [isLogin, setIsLogin] = useState(true)
+  const [isCallback, setIsCallback] = useState(false)
+
+  useEffect(() => {
+    if (window.location.pathname === '/auth/callback') {
+      setIsCallback(true)
+    }
+  }, [])
 
   if (loading) {
     return (
@@ -169,6 +177,10 @@ function AuthFlow() {
         </div>
       </div>
     )
+  }
+
+  if (isCallback) {
+    return <AuthCallback />
   }
 
   if (!user) {
