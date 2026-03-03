@@ -7,40 +7,43 @@ export default {
   theme: {
     extend: {
       colors: {
-        border: "hsl(214.3 31.8% 91.4%)",
-        input: "hsl(214.3 31.8% 91.4%)",
-        ring: "hsl(222.2 84% 4.9%)",
-        background: "hsl(0 0% 100%)",
-        foreground: "hsl(222.2 84% 4.9%)",
+        border: "hsl(var(--border-default))",
+        input: "hsl(var(--border-default))",
+        ring: "hsl(var(--accent-primary))",
+        background: "hsl(var(--bg-app))",
+        foreground: "hsl(var(--text-primary))",
         primary: {
-          DEFAULT: "hsl(222.2 47.4% 11.2%)",
-          foreground: "hsl(210 40% 98%)",
+          DEFAULT: "hsl(var(--accent-primary))",
+          foreground: "hsl(var(--bg-surface))",
         },
         secondary: {
-          DEFAULT: "hsl(210 40% 96.1%)",
-          foreground: "hsl(222.2 47.4% 11.2%)",
+          DEFAULT: "hsl(var(--accent-secondary))",
+          foreground: "hsl(var(--bg-surface))",
         },
         destructive: {
-          DEFAULT: "hsl(0 84.2% 60.2%)",
-          foreground: "hsl(210 40% 98%)",
+          DEFAULT: "hsl(var(--error))",
+          foreground: "hsl(var(--bg-surface))",
         },
         muted: {
-          DEFAULT: "hsl(210 40% 96.1%)",
-          foreground: "hsl(215.4 16.3% 46.9%)",
+          DEFAULT: "hsl(var(--bg-elevated))",
+          foreground: "hsl(var(--text-secondary))",
         },
         accent: {
-          DEFAULT: "hsl(210 40% 96.1%)",
-          foreground: "hsl(222.2 47.4% 11.2%)",
+          DEFAULT: "hsl(var(--accent-primary))",
+          foreground: "hsl(var(--bg-surface))",
         },
         card: {
-          DEFAULT: "hsl(0 0% 100%)",
-          foreground: "hsl(222.2 84% 4.9%)",
+          DEFAULT: "hsl(var(--bg-surface))",
+          foreground: "hsl(var(--text-primary))",
         },
       },
       borderRadius: {
-        lg: "0.5rem",
-        md: "calc(0.5rem - 2px)",
-        sm: "calc(0.5rem - 4px)",
+        lg: "var(--radius-lg)",
+        md: "var(--radius-md)",
+        sm: "var(--radius-sm)",
+      },
+      backgroundImage: {
+        'gradient-primary': 'linear-gradient(135deg, hsl(var(--accent-primary)) 0%, hsl(var(--accent-secondary)) 100%)',
       },
     },
   },

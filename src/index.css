@@ -3,11 +3,83 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    /* Background colors */
+    --bg-app: 248 250 252;
+    --bg-surface: 255 255 255;
+    --bg-elevated: 255 255 255;
+
+    /* Text colors */
+    --text-primary: 15 23 42;
+    --text-secondary: 100 116 139;
+    --text-tertiary: 148 163 184;
+
+    /* Border colors */
+    --border-subtle: 226 232 240;
+    --border-default: 203 213 225;
+
+    /* Accent colors - Using blue/cyan instead of violet */
+    --accent-primary: 59 130 246;
+    --accent-secondary: 14 165 233;
+    --accent-cyan: 6 182 212;
+    --accent-violet: 99 102 241;
+    --accent-magenta: 168 85 247;
+
+    /* Status colors */
+    --success: 34 197 94;
+    --warning: 245 158 11;
+    --error: 239 68 68;
+    --info: 59 130 246;
+
+    /* Spacing and sizing */
+    --radius-sm: 0.25rem;
+    --radius-md: 0.375rem;
+    --radius-lg: 0.5rem;
+    --radius-xl: 0.75rem;
+
+    /* Effects */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  }
+
   * {
-    @apply border-slate-200;
+    @apply border-border;
   }
 
   body {
     @apply bg-slate-50 text-slate-900;
+    background-color: hsl(var(--bg-app));
+    color: hsl(var(--text-primary));
+  }
+
+  /* Utility classes */
+  .surface-1 {
+    background-color: hsl(var(--bg-surface));
+  }
+
+  .surface-2 {
+    background-color: hsl(var(--bg-elevated));
+  }
+
+  .text-primary {
+    color: hsl(var(--text-primary));
+  }
+
+  .text-secondary {
+    color: hsl(var(--text-secondary));
+  }
+
+  .bg-gradient-primary {
+    background: linear-gradient(135deg, hsl(var(--accent-primary)) 0%, hsl(var(--accent-secondary)) 100%);
+  }
+
+  /* Transition utilities */
+  .transition-micro {
+    transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .transition-smooth {
+    transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
   }
 }
