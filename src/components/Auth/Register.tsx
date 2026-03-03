@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useAuth } from '@/contexts/AuthContext'
+import { supabase } from '@/lib/supabase'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -19,6 +20,25 @@ export function Register({ onToggleMode }: RegisterProps) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
+  const [companyLogo, setCompanyLogo] = useState<string | null>(null)
+  const [companyName, setCompanyName] = useState('Smart Talent Matcher')
+
+  useEffect(() => {
+    loadCompanySettings()
+  }, [])
+
+  const loadCompanySettings = async () => {
+    const { data } = await supabase
+      .from('company_settings')
+      .select('logo_url, company_name')
+      .limit(1)
+      .maybeSingle()
+
+    if (data) {
+      setCompanyLogo(data.logo_url)
+      setCompanyName(data.company_name || 'Smart Talent Matcher')
+    }
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -53,18 +73,38 @@ export function Register({ onToggleMode }: RegisterProps) {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-50 px-4">
-      <Card className="w-full max-w-md">
-        <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-bold text-center">
-            Create Account
-          </CardTitle>
-          <CardDescription className="text-center">
-            Sign up to get started with Smart Talent Matcher
-          </CardDescription>
+    <div className="min-h-screen flex items-center justify-center bg-[var(--bg-app)] px-4 relative overflow-hidden">
+      <div className="absolute top-0 right-0 w-[800px] h-[800px] opacity-30 pointer-events-none">
+        <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-br from-[var(--accent-violet)] via-transparent to-transparent blur-[120px]" />
+      </div>
+      <div className="absolute bottom-0 left-0 w-[600px] h-[600px] opacity-20 pointer-events-none">
+        <div className="absolute bottom-0 left-0 w-full h-full bg-gradient-to-tr from-[var(--accent-cyan)] via-transparent to-transparent blur-[100px]" />
+      </div>
+
+      <Card className="w-full max-w-md relative z-10">
+        <CardHeader className="space-y-4">
+          {companyLogo && (
+            <div className="flex justify-center">
+              <div className="w-20 h-20 rounded-[var(--radius-lg)] border border-[var(--border-subtle)] surface-2 p-3 flex items-center justify-center overflow-hidden">
+                <img
+                  src={companyLogo}
+                  alt="Company logo"
+                  className="max-w-full max-h-full object-contain"
+                />
+              </div>
+            </div>
+          )}
+          <div className="space-y-1">
+            <CardTitle className="text-3xl font-bold text-center bg-gradient-primary bg-clip-text text-transparent">
+              Create Account
+            </CardTitle>
+            <CardDescription className="text-center">
+              Sign up to get started with {companyName}
+            </CardDescription>
+          </div>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-5">
             <div className="space-y-2">
               <Label htmlFor="fullName">Full Name</Label>
               <Input
@@ -115,31 +155,31 @@ export function Register({ onToggleMode }: RegisterProps) {
             </div>
 
             {error && (
-              <div className="rounded-lg p-3 bg-red-50 border border-red-200 flex items-start gap-2">
-                <AlertCircle className="h-4 w-4 text-red-600 flex-shrink-0 mt-0.5" />
-                <p className="text-sm text-red-700">{error}</p>
+              <div className="rounded-[var(--radius-md)] p-3 bg-[var(--error)] bg-opacity-10 border border-[var(--error)] border-opacity-30 flex items-start gap-2">
+                <AlertCircle className="h-4 w-4 text-[var(--error)] flex-shrink-0 mt-0.5" />
+                <p className="text-sm text-[var(--error)]">{error}</p>
               </div>
             )}
 
             {success && (
-              <div className="rounded-lg p-3 bg-green-50 border border-green-200 flex items-start gap-2">
-                <CheckCircle2 className="h-4 w-4 text-green-600 flex-shrink-0 mt-0.5" />
-                <p className="text-sm text-green-700">
+              <div className="rounded-[var(--radius-md)] p-3 bg-[var(--success)] bg-opacity-10 border border-[var(--success)] border-opacity-30 flex items-start gap-2">
+                <CheckCircle2 className="h-4 w-4 text-[var(--success)] flex-shrink-0 mt-0.5" />
+                <p className="text-sm text-[var(--success)]">
                   Account created successfully! Redirecting to login...
                 </p>
               </div>
             )}
 
-            <Button type="submit" className="w-full" disabled={loading || success}>
+            <Button type="submit" className="w-full" disabled={loading || success} size="lg">
               {loading ? 'Creating account...' : 'Sign Up'}
             </Button>
 
             <div className="text-center text-sm">
-              <span className="text-slate-600">Already have an account? </span>
+              <span className="text-[var(--text-secondary)]">Already have an account? </span>
               <button
                 type="button"
                 onClick={onToggleMode}
-                className="text-slate-900 font-medium hover:underline"
+                className="text-[var(--accent-violet)] font-medium hover:text-[var(--accent-magenta)] transition-micro hover:underline"
               >
                 Sign in
               </button>
